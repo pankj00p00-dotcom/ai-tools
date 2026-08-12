@@ -8,13 +8,11 @@ import LatestTools from "./components/LatestTools";
 import Stats from "./components/Stats";
 import Testimonials from "./components/Testimonials";
 import WhyChoose from "./components/WhyChoose";
-import ToolSearch from "./components/ToolSearch"; 
 export default function Home() {
   return (
     <>
       <Navbar />
       <Hero />
-      <ToolSearch />
       <Trending />
       <Categories />
       <Collections />
