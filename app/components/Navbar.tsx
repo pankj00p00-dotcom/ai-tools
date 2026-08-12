@@ -17,6 +17,7 @@ export default function Navbar() {
         {/* Menu */}
         <ul className="hidden md:flex items-center gap-8 text-gray-300">
 
+          {/* Home */}
           <li>
             <Link
               href="/"
@@ -26,6 +27,7 @@ export default function Navbar() {
             </Link>
           </li>
 
+          {/* AI Tools */}
           <li>
             <Link
               href="/tools"
@@ -35,18 +37,20 @@ export default function Navbar() {
             </Link>
           </li>
 
+          {/* Categories */}
           <li>
             <Link
-              href="/tools"
+              href="/tools#categories"
               className="hover:text-white transition"
             >
               Categories
             </Link>
           </li>
 
+          {/* Trending */}
           <li>
             <Link
-              href="/tools"
+              href="/tools#trending"
               className="hover:text-white transition"
             >
               Trending

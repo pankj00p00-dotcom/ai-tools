@@ -13,10 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yourdomain.com"),
+  metadataBase: new URL("https://ai-tools-three-rho.vercel.app"),
 
   title: {
-    default: "AI Tools - Discover the Best AI Tools",
+    default: "AI Tools – Discover the Best AI Tools",
     template: "%s | AI Tools",
   },
 
@@ -28,20 +28,33 @@ export const metadata: Metadata = {
     "best AI tools",
     "AI tools directory",
     "free AI tools",
+    "AI software",
     "artificial intelligence tools",
   ],
-
-  openGraph: {
-    title: "AI Tools - Discover the Best AI Tools",
-    description:
-      "Explore the best AI tools for writing, images, video, coding, SEO, marketing and productivity.",
-    type: "website",
-    siteName: "AI Tools",
-  },
 
   robots: {
     index: true,
     follow: true,
+  },
+
+  openGraph: {
+    title: "AI Tools – Discover the Best AI Tools",
+    description:
+      "Explore the best AI tools for writing, images, video, coding, SEO, marketing and productivity.",
+    url: "https://ai-tools-three-rho.vercel.app",
+    siteName: "AI Tools",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Tools – Discover the Best AI Tools",
+    description:
+      "Explore the best AI tools for writing, images, video, coding, SEO, marketing and productivity.",
+  },
+
+  alternates: {
+    canonical: "https://ai-tools-three-rho.vercel.app",
   },
 };
 

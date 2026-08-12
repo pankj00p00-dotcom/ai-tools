@@ -1,7 +1,23 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
 import ToolCard from "./ToolCard";
 import { tools } from "../data/tools";
 
 export default function Hero() {
+  const [search, setSearch] = useState("");
+
+  const searchResults = tools.filter((tool) =>
+    `${tool.name} ${tool.category} ${tool.description}`
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
+  const displayedTools = search
+    ? searchResults.slice(0, 4)
+    : tools.slice(0, 4);
+
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center px-6 pt-28 pb-20">
 
@@ -30,27 +46,45 @@ export default function Hero() {
       {/* Search */}
       <input
         type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
         placeholder="Search AI Tools..."
-        className="w-full max-w-xl rounded-xl border border-gray-700 bg-gray-900 p-4 text-white mt-8"
+        className="w-full max-w-xl rounded-xl border border-gray-700 bg-gray-900 p-4 text-white mt-8 outline-none focus:border-blue-500"
       />
 
-      {/* Featured Tools */}
+      {/* Results */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 max-w-5xl mx-auto w-full">
 
-        {tools.slice(0, 4).map((tool) => (
-          <ToolCard
-            key={tool.id}
-            icon={tool.icon}
-            title={tool.name}
-            slug={tool.slug}
-            category={tool.category}
-            price={tool.pricing}
-            rating={tool.rating.toString()}
-            description={tool.description}
-          />
-        ))}
+        {displayedTools.length > 0 ? (
+          displayedTools.map((tool) => (
+            <ToolCard
+              key={tool.id}
+              icon={tool.icon}
+              title={tool.name}
+              category={tool.category}
+              price={tool.pricing}
+              rating={tool.rating.toString()}
+              description={tool.description}
+              url={tool.url}
+            />
+          ))
+        ) : (
+          <p className="text-gray-400 text-center col-span-full">
+            No AI tool found.
+          </p>
+        )}
 
       </div>
+
+      {/* View More */}
+      {!search && (
+        <Link
+          href="/tools"
+          className="mt-10 bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl font-semibold transition"
+        >
+          View More AI Tools →
+        </Link>
+      )}
 
     </main>
   );
