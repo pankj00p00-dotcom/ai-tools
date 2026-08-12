@@ -36,7 +36,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-
+verification: {
+  google: "GRtDQJ2BpUGChbtvJVmupWRxMTszIEmufHkd2qxR2C0",
+},
   openGraph: {
     title: "AI Tools – Discover the Best AI Tools",
     description:
