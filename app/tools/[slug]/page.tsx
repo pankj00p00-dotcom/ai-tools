@@ -2,6 +2,7 @@ import { tools } from "../../data/tools";
 import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 type ToolPageProps = {
   params: Promise<{
@@ -9,7 +10,16 @@ type ToolPageProps = {
   }>;
 };
 
-// Generate SEO metadata for every tool page
+const SITE_URL = "https://ai-tools-three-rho.vercel.app";
+
+// Generate static pages for all tools
+export function generateStaticParams() {
+  return tools.map((tool) => ({
+    slug: tool.slug,
+  }));
+}
+
+// SEO metadata for every tool page
 export async function generateMetadata({
   params,
 }: ToolPageProps): Promise<Metadata> {
@@ -28,10 +38,10 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${tool.name} – Features, Pricing & Review`;
-  const description = `${tool.name} is a ${tool.category.toLowerCase()} AI tool. Learn about its features, pricing, rating and what you can use it for.`;
+  const title = `${tool.name} Review, Features & Pricing`;
+  const description = `${tool.name} review: features, pricing, pros, cons, best use cases and alternatives. Explore this ${tool.category.toLowerCase()} AI tool.`;
 
-  const url = `https://ai-tools-three-rho.vercel.app/tools/${tool.slug}`;
+  const url = `${SITE_URL}/tools/${tool.slug}`;
 
   return {
     title,
@@ -43,6 +53,8 @@ export async function generateMetadata({
       `${tool.name} review`,
       `${tool.name} pricing`,
       `${tool.name} features`,
+      `${tool.name} alternatives`,
+      `${tool.name} pros and cons`,
       `${tool.category} AI tools`,
       "AI tools",
     ],
@@ -78,35 +90,12 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const tool = tools.find((item) => item.slug === slug);
 
   if (!tool) {
-    return (
-      <>
-        <Navbar />
-
-        <main className="min-h-screen bg-black text-white flex items-center justify-center px-6 pt-24">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold">
-              Tool Not Found
-            </h1>
-
-            <p className="text-gray-400 mt-4">
-              The AI tool you are looking for does not exist.
-            </p>
-
-            <Link
-              href="/tools"
-              className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl transition"
-            >
-              ← Back to AI Tools
-            </Link>
-          </div>
-        </main>
-      </>
-    );
+    notFound();
   }
 
-  const url = `https://ai-tools-three-rho.vercel.app/tools/${tool.slug}`;
+  const url = `${SITE_URL}/tools/${tool.slug}`;
 
-  // Related tools from the same category
+  // Related tools
   const relatedTools = tools
     .filter(
       (item) =>
@@ -115,7 +104,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
     )
     .slice(0, 3);
 
-  // Software/Application structured data
+  // Software structured data
   const softwareSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -124,12 +113,10 @@ export default async function ToolPage({ params }: ToolPageProps) {
     applicationCategory: tool.category,
     operatingSystem: "Web",
     url: tool.url,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: tool.rating,
-      bestRating: 5,
-      worstRating: 1,
-      ratingCount: 1,
+    offers: {
+      "@type": "Offer",
+      price: tool.pricing === "Free" ? "0" : undefined,
+      priceCurrency: "USD",
     },
   };
 
@@ -142,13 +129,13 @@ export default async function ToolPage({ params }: ToolPageProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://ai-tools-three-rho.vercel.app/",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "AI Tools",
-        item: "https://ai-tools-three-rho.vercel.app/tools",
+        item: `${SITE_URL}/tools`,
       },
       {
         "@type": "ListItem",
@@ -164,7 +151,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
       <Navbar />
 
       <main className="min-h-screen bg-black text-white px-6 pt-32 pb-20">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
 
           {/* Structured Data */}
           <script
@@ -182,7 +169,10 @@ export default async function ToolPage({ params }: ToolPageProps) {
           />
 
           {/* Breadcrumb */}
-          <nav className="text-sm text-gray-500 mb-6">
+          <nav
+            aria-label="Breadcrumb"
+            className="text-sm text-gray-500 mb-8"
+          >
             <Link
               href="/"
               className="hover:text-white transition"
@@ -214,11 +204,14 @@ export default async function ToolPage({ params }: ToolPageProps) {
             ← Back to AI Tools
           </Link>
 
-          {/* Tool Header */}
-          <article className="mt-10 bg-gray-900 border border-gray-800 rounded-3xl p-8 md:p-12">
+          {/* Main Tool Card */}
+          <article className="mt-8 bg-gray-900 border border-gray-800 rounded-3xl p-8 md:p-12">
 
             {/* Icon */}
-            <div className="text-6xl" aria-hidden="true">
+            <div
+              className="text-6xl"
+              aria-hidden="true"
+            >
               {tool.icon}
             </div>
 
@@ -227,7 +220,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
               {tool.name}
             </h1>
 
-            {/* Information */}
+            {/* Badges */}
             <div className="flex flex-wrap gap-3 mt-5">
 
               <span className="bg-blue-600/20 text-blue-400 px-4 py-2 rounded-full">
@@ -239,7 +232,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
               </span>
 
               <span className="bg-yellow-600/20 text-yellow-400 px-4 py-2 rounded-full">
-                ⭐ {tool.rating}
+                ⭐ {tool.rating}/5
               </span>
 
             </div>
@@ -249,77 +242,239 @@ export default async function ToolPage({ params }: ToolPageProps) {
               {tool.description}
             </p>
 
-            {/* About */}
-            <section className="mt-10">
-              <h2 className="text-2xl font-bold">
-                About {tool.name}
-              </h2>
-
-              <p className="text-gray-400 mt-4 leading-relaxed">
-                {tool.name} is a {tool.category.toLowerCase()} AI
-                tool listed in the AI Tools directory. It is
-                designed to help users with tasks related to{" "}
-                {tool.category.toLowerCase()} and AI-powered
-                workflows.
-              </p>
-            </section>
-
-            {/* Pricing */}
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold">
-                {tool.name} Pricing
-              </h2>
-
-              <p className="text-gray-400 mt-4 leading-relaxed">
-                Pricing category:{" "}
-                <span className="text-white font-semibold">
-                  {tool.pricing}
-                </span>
-                . Check the official website for the latest
-                pricing, plans and available features.
-              </p>
-            </section>
-
-            {/* Rating */}
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold">
-                {tool.name} Rating
-              </h2>
-
-              <p className="text-gray-400 mt-4">
-                Our directory rating:{" "}
-                <span className="text-yellow-400 font-semibold">
-                  ⭐ {tool.rating}/5
-                </span>
-              </p>
-            </section>
-
             {/* Visit Tool */}
             <a
               href={tool.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mt-10 bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl font-semibold transition"
+              className="inline-block mt-8 bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl font-semibold transition"
             >
               Visit {tool.name} →
             </a>
+
+            {/* About */}
+            <section className="mt-12">
+              <h2 className="text-2xl md:text-3xl font-bold">
+                About {tool.name}
+              </h2>
+
+              <p className="text-gray-400 mt-4 leading-relaxed">
+                {tool.name} is a {tool.category.toLowerCase()} AI
+                tool designed to help users with AI-powered
+                workflows and tasks. It is listed in our AI tools
+                directory to help users discover and compare
+                useful software.
+              </p>
+            </section>
+
+            {/* Best For */}
+            <section className="mt-10">
+              <h2 className="text-2xl md:text-3xl font-bold">
+                Best For
+              </h2>
+
+              <p className="text-gray-400 mt-4 leading-relaxed">
+                {tool.bestFor}
+              </p>
+            </section>
+
+            {/* Features */}
+            <section className="mt-10">
+              <h2 className="text-2xl md:text-3xl font-bold">
+                {tool.name} Features
+              </h2>
+
+              <ul className="mt-5 space-y-3">
+                {tool.features.map((feature, index) => (
+                  <li
+                    key={index}
+                    className="flex items-start gap-3 text-gray-300"
+                  >
+                    <span className="text-blue-400 mt-1">
+                      ✓
+                    </span>
+
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            {/* Pricing */}
+            <section className="mt-10">
+              <h2 className="text-2xl md:text-3xl font-bold">
+                {tool.name} Pricing
+              </h2>
+
+              <div className="mt-5 bg-black border border-gray-800 rounded-2xl p-6">
+                <p className="text-gray-300 leading-relaxed">
+                  <strong className="text-white">
+                    Pricing type:
+                  </strong>{" "}
+                  {tool.pricing}
+                </p>
+
+                <p className="text-gray-400 mt-4 leading-relaxed">
+                  {tool.pricingDetails}
+                </p>
+
+                <a
+                  href={tool.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-5 text-blue-400 hover:text-blue-300"
+                >
+                  Check official pricing →
+                </a>
+              </div>
+            </section>
+
+            {/* Pros and Cons */}
+            <section className="mt-10">
+              <h2 className="text-2xl md:text-3xl font-bold">
+                {tool.name} Pros and Cons
+              </h2>
+
+              <div className="grid md:grid-cols-2 gap-6 mt-6">
+
+                {/* Pros */}
+                <div className="bg-black border border-gray-800 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold">
+                    Pros
+                  </h3>
+
+                  <ul className="mt-4 space-y-3">
+                    {tool.pros.map((pro, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start gap-3 text-gray-300"
+                      >
+                        <span className="text-green-400">
+                          ✓
+                        </span>
+
+                        <span>{pro}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Cons */}
+                <div className="bg-black border border-gray-800 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold">
+                    Cons
+                  </h3>
+
+                  <ul className="mt-4 space-y-3">
+                    {tool.cons.map((con, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start gap-3 text-gray-300"
+                      >
+                        <span className="text-red-400">
+                          ✕
+                        </span>
+
+                        <span>{con}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+              </div>
+            </section>
+
+            {/* Rating */}
+            <section className="mt-10">
+              <h2 className="text-2xl md:text-3xl font-bold">
+                {tool.name} Rating
+              </h2>
+
+              <div className="mt-5 bg-black border border-gray-800 rounded-2xl p-6">
+                <div className="text-3xl font-bold">
+                  ⭐ {tool.rating}/5
+                </div>
+
+                <p className="text-gray-400 mt-3">
+                  Directory rating for {tool.name}.
+                </p>
+              </div>
+            </section>
+
           </article>
+
+          {/* Alternatives */}
+          <section className="mt-14">
+            <h2 className="text-3xl font-bold">
+              {tool.name} Alternatives
+            </h2>
+
+            <p className="text-gray-400 mt-3">
+              Other AI tools you may want to compare with{" "}
+              {tool.name}.
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-5 mt-6">
+
+              {tool.alternatives.map((alternative) => {
+                const alternativeTool = tools.find(
+                  (item) => item.name === alternative
+                );
+
+                if (!alternativeTool) {
+                  return null;
+                }
+
+                return (
+                  <Link
+                    key={alternativeTool.id}
+                    href={`/tools/${alternativeTool.slug}`}
+                    className="bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-blue-500 transition"
+                  >
+                    <div
+                      className="text-3xl"
+                      aria-hidden="true"
+                    >
+                      {alternativeTool.icon}
+                    </div>
+
+                    <h3 className="text-lg font-bold mt-3">
+                      {alternativeTool.name}
+                    </h3>
+
+                    <p className="text-gray-400 text-sm mt-2">
+                      {alternativeTool.description}
+                    </p>
+
+                    <span className="inline-block mt-4 text-blue-400 text-sm">
+                      View {alternativeTool.name} →
+                    </span>
+                  </Link>
+                );
+              })}
+
+            </div>
+          </section>
 
           {/* Related Tools */}
           {relatedTools.length > 0 && (
             <section className="mt-14">
               <h2 className="text-3xl font-bold">
-                Related {tool.category} AI Tools
+                More {tool.category} AI Tools
               </h2>
 
               <div className="grid md:grid-cols-3 gap-5 mt-6">
+
                 {relatedTools.map((relatedTool) => (
                   <Link
                     key={relatedTool.id}
                     href={`/tools/${relatedTool.slug}`}
                     className="bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-blue-500 transition"
                   >
-                    <div className="text-3xl">
+                    <div
+                      className="text-3xl"
+                      aria-hidden="true"
+                    >
                       {relatedTool.icon}
                     </div>
 
@@ -336,6 +491,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
                     </span>
                   </Link>
                 ))}
+
               </div>
             </section>
           )}

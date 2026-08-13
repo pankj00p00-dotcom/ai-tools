@@ -10,19 +10,12 @@ export default function ToolSearch() {
   const [pricing, setPricing] = useState("All");
   const [sort, setSort] = useState("Top Rated");
 
+  // Categories automatically generated from tools.ts
   const categories = [
     "All",
-    "Chatbot",
-    "Research",
-    "Writing",
-    "Image",
-    "Design",
-    "Video",
-    "Coding",
-    "Voice",
-    "Music",
-    "SEO",
-    "Productivity",
+    ...Array.from(
+      new Set(tools.map((tool) => tool.category))
+    ).sort(),
   ];
 
   const pricingOptions = [
@@ -45,11 +38,17 @@ export default function ToolSearch() {
       setSearch(searchQuery);
     }
 
-    if (categoryQuery && categories.includes(categoryQuery)) {
+    if (
+      categoryQuery &&
+      categories.includes(categoryQuery)
+    ) {
       setCategory(categoryQuery);
     }
 
-    if (pricingQuery && pricingOptions.includes(pricingQuery)) {
+    if (
+      pricingQuery &&
+      pricingOptions.includes(pricingQuery)
+    ) {
       setPricing(pricingQuery);
     }
 
@@ -91,7 +90,9 @@ export default function ToolSearch() {
     window.history.replaceState(
       {},
       "",
-      queryString ? `/tools?${queryString}` : "/tools"
+      queryString
+        ? `/tools?${queryString}`
+        : "/tools"
     );
   };
 
@@ -145,43 +146,54 @@ export default function ToolSearch() {
 
   // Filter tools
   let filteredTools = tools.filter((tool) => {
-    const searchText = search.toLowerCase().trim();
+    const searchText = search
+      .toLowerCase()
+      .trim();
 
     const matchesSearch =
-      tool.name.toLowerCase().includes(searchText) ||
-      tool.category.toLowerCase().includes(searchText) ||
-      tool.description.toLowerCase().includes(searchText);
+      tool.name
+        .toLowerCase()
+        .includes(searchText) ||
+      tool.category
+        .toLowerCase()
+        .includes(searchText) ||
+      tool.description
+        .toLowerCase()
+        .includes(searchText);
 
     const matchesCategory =
-      category === "All" || tool.category === category;
+      category === "All" ||
+      tool.category === category;
 
     const matchesPricing =
-      pricing === "All" || tool.pricing === pricing;
+      pricing === "All" ||
+      tool.pricing === pricing;
 
-    return matchesSearch && matchesCategory && matchesPricing;
+    return (
+      matchesSearch &&
+      matchesCategory &&
+      matchesPricing
+    );
   });
 
   // Sorting
-  filteredTools = [...filteredTools].sort((a, b) => {
-    if (sort === "Top Rated") {
-      return b.rating - a.rating;
+  filteredTools = [...filteredTools].sort(
+    (a, b) => {
+      if (sort === "Top Rated") {
+        return b.rating - a.rating;
+      }
+
+      if (sort === "Name A-Z") {
+        return a.name.localeCompare(b.name);
+      }
+
+      if (sort === "Name Z-A") {
+        return b.name.localeCompare(a.name);
+      }
+
+      return 0;
     }
-
-    if (sort === "Name A-Z") {
-      return a.name.localeCompare(b.name);
-    }
-
-    if (sort === "Name Z-A") {
-      return b.name.localeCompare(a.name);
-    }
-
-    return 0;
-  });
-
-  // Trending tools
-  const trendingTools = [...tools]
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, 4);
+  );
 
   return (
     <>
@@ -190,59 +202,47 @@ export default function ToolSearch() {
         <input
           type="text"
           value={search}
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={(e) =>
+            handleSearch(e.target.value)
+          }
           placeholder="Search AI Tools..."
+          aria-label="Search AI tools"
           className="w-full rounded-xl border border-gray-700 bg-gray-900 p-4 text-white outline-none focus:border-blue-500"
         />
       </div>
 
-      {/* Trending Section */}
-      <section id="trending" className="scroll-mt-28 mt-16">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-3xl font-bold text-white">
-              🔥 Trending AI Tools
-            </h2>
+      {/* Category Filter */}
+      <div className="flex flex-wrap justify-center gap-3 mt-8">
+        {categories.map((item) => (
+          <button
+            key={item}
+            onClick={() =>
+              handleCategory(item)
+            }
+            className={`px-5 py-2 rounded-full border transition ${
+              category === item
+                ? "bg-blue-600 border-blue-600 text-white"
+                : "border-gray-700 text-gray-300 hover:border-blue-500"
+            }`}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
 
-            <p className="text-gray-400 mt-2">
-              Popular and highly rated AI tools.
-            </p>
-          </div>
-        </div>
+      {/* Pricing + Sorting */}
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mt-8">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {trendingTools.map((tool) => (
-            <ToolCard
-              key={tool.id}
-              icon={tool.icon}
-              title={tool.name}
-              category={tool.category}
-              price={tool.pricing}
-              rating={tool.rating.toString()}
-              description={tool.description}
-              url={tool.url}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section id="categories" className="scroll-mt-28 mt-16">
-        <h2 className="text-3xl font-bold text-white text-center">
-          📂 Browse by Category
-        </h2>
-
-        <p className="text-gray-400 text-center mt-2">
-          Find AI tools based on what you want to accomplish.
-        </p>
-
-        <div className="flex flex-wrap justify-center gap-3 mt-8">
-          {categories.map((item) => (
+        {/* Pricing */}
+        <div className="flex flex-wrap gap-2">
+          {pricingOptions.map((item) => (
             <button
               key={item}
-              onClick={() => handleCategory(item)}
-              className={`px-5 py-2 rounded-full border transition ${
-                category === item
+              onClick={() =>
+                handlePricing(item)
+              }
+              className={`px-4 py-2 rounded-lg border transition ${
+                pricing === item
                   ? "bg-blue-600 border-blue-600 text-white"
                   : "border-gray-700 text-gray-300 hover:border-blue-500"
               }`}
@@ -251,82 +251,54 @@ export default function ToolSearch() {
             </button>
           ))}
         </div>
-      </section>
 
-      {/* Filters */}
-      <section className="mt-12">
+        {/* Sorting */}
+        <select
+          value={sort}
+          onChange={(e) =>
+            handleSort(e.target.value)
+          }
+          aria-label="Sort AI tools"
+          className="bg-gray-900 border border-gray-700 text-white rounded-lg px-4 py-2 outline-none"
+        >
+          <option>Top Rated</option>
+          <option>Name A-Z</option>
+          <option>Name Z-A</option>
+        </select>
 
-        {/* Pricing + Sorting */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+      </div>
 
-          {/* Pricing */}
-          <div className="flex flex-wrap gap-2">
-            {pricingOptions.map((item) => (
-              <button
-                key={item}
-                onClick={() => handlePricing(item)}
-                className={`px-4 py-2 rounded-lg border transition ${
-                  pricing === item
-                    ? "bg-blue-600 border-blue-600 text-white"
-                    : "border-gray-700 text-gray-300 hover:border-blue-500"
-                }`}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-
-          {/* Sorting */}
-          <select
-            value={sort}
-            onChange={(e) => handleSort(e.target.value)}
-            className="bg-gray-900 border border-gray-700 text-white rounded-lg px-4 py-2 outline-none"
-          >
-            <option>Top Rated</option>
-            <option>Name A-Z</option>
-            <option>Name Z-A</option>
-          </select>
-
-        </div>
-      </section>
+      {/* Results Count */}
+      <p className="text-gray-500 mt-8">
+        Showing {filteredTools.length}{" "}
+        {filteredTools.length === 1
+          ? "tool"
+          : "tools"}
+      </p>
 
       {/* Results */}
-      <section className="mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        {filteredTools.map((tool) => (
+          <ToolCard
+            key={tool.id}
+            icon={tool.icon}
+            title={tool.name}
+            category={tool.category}
+            price={tool.pricing}
+            rating={tool.rating.toString()}
+            description={tool.description}
+            url={tool.url}
+            slug={tool.slug}
+          />
+        ))}
+      </div>
 
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">
-            🤖 All AI Tools
-          </h2>
-
-          <p className="text-gray-500">
-            Showing {filteredTools.length} tools
-          </p>
-        </div>
-
-        {/* Tool Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-          {filteredTools.map((tool) => (
-            <ToolCard
-              key={tool.id}
-              icon={tool.icon}
-              title={tool.name}
-              category={tool.category}
-              price={tool.pricing}
-              rating={tool.rating.toString()}
-              description={tool.description}
-              url={tool.url}
-            />
-          ))}
-        </div>
-
-        {/* No Results */}
-        {filteredTools.length === 0 && (
-          <p className="text-center text-gray-400 mt-12">
-            No AI tools found.
-          </p>
-        )}
-
-      </section>
+      {/* No Results */}
+      {filteredTools.length === 0 && (
+        <p className="text-center text-gray-400 mt-12">
+          No AI tools found.
+        </p>
+      )}
     </>
   );
 }
