@@ -59,10 +59,6 @@ export const metadata: Metadata = {
     description:
       "Explore the best AI tools for writing, images, video, coding, SEO, marketing and productivity.",
   },
-
-  alternates: {
-    canonical: "https://ai-tools-three-rho.vercel.app",
-  },
 };
 
 export default function RootLayout({

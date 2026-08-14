@@ -1034,4 +1034,163 @@ export const tools: Tool[] = [
     alternatives: ["ChatGPT", "Claude", "Google Gemini"],
     url: "https://www.notion.com/product/ai",
   },
+    {
+    id: 31,
+    name: "Instagram Video Downloader",
+    slug: "instagram-video-downloader",
+    icon: "📸",
+    category: "Video Downloader",
+    pricing: "Free",
+    rating: 4.8,
+    description:
+      "Free Instagram video downloader that lets you save publicly accessible Instagram videos and Reels by entering a video URL.",
+    features: [
+      "Instagram video URL downloader",
+      "Instagram Reels downloader",
+      "Simple link-based downloading",
+      "Fast and easy interface",
+      "Works on desktop and mobile",
+      "No software installation required",
+    ],
+    bestFor:
+      "Users who want to save publicly accessible Instagram videos or Reels for personal or permitted use.",
+    pros: [
+      "Simple URL-based workflow",
+      "Free to use",
+      "No app installation required",
+      "Mobile-friendly",
+    ],
+    cons: [
+      "Only publicly accessible or permitted content should be downloaded",
+      "Availability can depend on Instagram changes",
+    ],
+    pricingDetails:
+      "Free to use. The downloader is designed for publicly accessible content and content the user has permission to download.",
+    alternatives: [
+      "Facebook Video Downloader",
+      "TikTok Video Downloader",
+      "YouTube Video Downloader",
+    ],
+    url: "/tools/instagram-video-downloader",
+  },
+
+  {
+    id: 32,
+    name: "Facebook Video Downloader",
+    slug: "facebook-video-downloader",
+    icon: "📘",
+    category: "Video Downloader",
+    pricing: "Free",
+    rating: 4.7,
+    description:
+      "Free Facebook video downloader for saving publicly accessible Facebook videos by entering a video URL.",
+    features: [
+      "Facebook video URL downloader",
+      "Simple copy-and-paste workflow",
+      "Fast video processing",
+      "Mobile-friendly interface",
+      "No software installation required",
+      "Easy video saving workflow",
+    ],
+    bestFor:
+      "Users who want to save publicly accessible Facebook videos for personal or permitted use.",
+    pros: [
+      "Free to use",
+      "Simple interface",
+      "Works across desktop and mobile",
+      "No installation required",
+    ],
+    cons: [
+      "Private videos may not be accessible",
+      "Platform changes can affect availability",
+    ],
+    pricingDetails:
+      "Free to use. Download only publicly accessible content or content you have permission to save.",
+    alternatives: [
+      "Instagram Video Downloader",
+      "TikTok Video Downloader",
+      "YouTube Video Downloader",
+    ],
+    url: "/tools/facebook-video-downloader",
+  },
+
+  {
+    id: 33,
+    name: "YouTube Video Downloader",
+    slug: "youtube-video-downloader",
+    icon: "▶️",
+    category: "Video Downloader",
+    pricing: "Free",
+    rating: 4.7,
+    description:
+      "YouTube video downloader interface for processing eligible video URLs and saving content when downloading is permitted.",
+    features: [
+      "YouTube video URL input",
+      "Simple copy-and-paste workflow",
+      "Fast URL processing",
+      "Mobile-friendly interface",
+      "No software installation required",
+      "Clear download workflow",
+    ],
+    bestFor:
+      "Users who need to save YouTube content that they own, have permission to download, or that YouTube otherwise makes available for download.",
+    pros: [
+      "Simple URL-based interface",
+      "Free to use",
+      "Works on desktop and mobile",
+      "No installation required",
+    ],
+    cons: [
+      "Download availability depends on YouTube and content permissions",
+      "Not all YouTube videos are eligible for downloading",
+    ],
+    pricingDetails:
+      "Free to use. Download availability depends on the video's permissions and YouTube's applicable terms and features.",
+    alternatives: [
+      "Instagram Video Downloader",
+      "Facebook Video Downloader",
+      "TikTok Video Downloader",
+    ],
+    url: "/tools/youtube-video-downloader",
+  },
+
+  {
+    id: 34,
+    name: "TikTok Video Downloader",
+    slug: "tiktok-video-downloader",
+    icon: "🎵",
+    category: "Video Downloader",
+    pricing: "Free",
+    rating: 4.8,
+    description:
+      "Free TikTok video downloader for processing publicly accessible TikTok video URLs and saving permitted content.",
+    features: [
+      "TikTok video URL downloader",
+      "Simple link-based workflow",
+      "Fast video processing",
+      "Mobile-friendly design",
+      "No software installation required",
+      "Easy download experience",
+    ],
+    bestFor:
+      "Users who want to save publicly accessible TikTok videos for personal or permitted use.",
+    pros: [
+      "Free to use",
+      "Simple URL workflow",
+      "Mobile-friendly",
+      "No installation required",
+    ],
+    cons: [
+      "Private videos may not be accessible",
+      "Platform changes can affect downloader functionality",
+    ],
+    pricingDetails:
+      "Free to use. Download publicly accessible content or content you have permission to save.",
+    alternatives: [
+      "Instagram Video Downloader",
+      "Facebook Video Downloader",
+      "YouTube Video Downloader",
+    ],
+    url: "/tools/tiktok-video-downloader",
+  },
 ];
