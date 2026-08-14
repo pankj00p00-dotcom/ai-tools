@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const WORKER_URL = "http://127.0.0.1:8000";
+const WORKER_URL = process.env.WORKER_URL?.replace(/\/+$/, "");
 
 type DownloadRequest = {
   platform?: string;
@@ -9,6 +9,15 @@ type DownloadRequest = {
 
 export async function POST(request: Request) {
   try {
+    if (!WORKER_URL) {
+      return NextResponse.json(
+        {
+          error: "Downloader worker URL is not configured.",
+        },
+        { status: 500 }
+      );
+    }
+
     const body = (await request.json()) as DownloadRequest;
 
     const platform = body.platform?.trim() || "";
@@ -44,7 +53,26 @@ export async function POST(request: Request) {
       cache: "no-store",
     });
 
-    const workerData = await workerResponse.json();
+    let workerData: {
+      success?: boolean;
+      jobId?: string;
+      title?: string;
+      downloadUrl?: string;
+      message?: string;
+      detail?: string;
+      error?: string;
+    };
+
+    try {
+      workerData = await workerResponse.json();
+    } catch {
+      return NextResponse.json(
+        {
+          error: "Downloader worker returned an invalid response.",
+        },
+        { status: 502 }
+      );
+    }
 
     if (!workerResponse.ok) {
       return NextResponse.json(
@@ -83,7 +111,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Unable to connect to the downloader worker. Make sure the Python worker is running.",
+          "Unable to connect to the downloader worker. Please try again later.",
       },
       { status: 503 }
     );
