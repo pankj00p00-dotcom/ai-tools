@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 const WORKER_URL = process.env.WORKER_URL?.replace(/\/+$/, "");
+const WORKER_API_KEY = process.env.WORKER_API_KEY;
 
 type DownloadRequest = {
   platform?: string;
@@ -13,6 +14,15 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error: "Downloader worker URL is not configured.",
+        },
+        { status: 500 }
+      );
+    }
+
+    if (!WORKER_API_KEY) {
+      return NextResponse.json(
+        {
+          error: "Downloader worker API key is not configured.",
         },
         { status: 500 }
       );
@@ -45,6 +55,7 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-api-key": WORKER_API_KEY,
       },
       body: JSON.stringify({
         url,
@@ -57,7 +68,6 @@ export async function POST(request: Request) {
       success?: boolean;
       jobId?: string;
       title?: string;
-      downloadUrl?: string;
       message?: string;
       detail?: string;
       error?: string;
@@ -101,7 +111,6 @@ export async function POST(request: Request) {
       success: true,
       jobId: workerData.jobId,
       title: workerData.title || "download",
-      downloadUrl: `${WORKER_URL}/download-file/${workerData.jobId}`,
       message:
         workerData.message || "Media processed successfully.",
     });
