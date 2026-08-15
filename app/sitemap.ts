@@ -30,6 +30,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+
+    // Instagram SEO articles
     {
       url: `${baseUrl}/blog/how-to-download-instagram-reels`,
       lastModified: new Date(),
@@ -48,6 +50,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+
+    // Facebook SEO articles
+    {
+      url: `${baseUrl}/blog/how-to-download-facebook-videos`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/blog/how-to-save-facebook-videos-on-iphone`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/blog/how-to-save-facebook-videos-on-android`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+
     {
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
@@ -60,6 +83,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+
     ...toolPages,
   ];
 }
