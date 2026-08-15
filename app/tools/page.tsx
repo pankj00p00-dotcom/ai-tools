@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Navbar from "../components/Navbar";
 import ToolSearch from "../components/ToolSearch";
 import type { Metadata } from "next";
@@ -37,6 +38,27 @@ export const metadata: Metadata = {
     follow: true,
   },
 };
+
+const downloaderTools = [
+  {
+    name: "Instagram Video Downloader",
+    description:
+      "Download eligible publicly accessible Instagram videos and Reels using a simple URL.",
+    href: "/tools/instagram-video-downloader",
+  },
+  {
+    name: "Facebook Video Downloader",
+    description:
+      "Download eligible public Facebook videos using a browser-based URL workflow.",
+    href: "/tools/facebook-video-downloader",
+  },
+  {
+    name: "YouTube Video Downloader",
+    description:
+      "Check YouTube video download availability for content you own or are permitted to save.",
+    href: "/tools/youtube-video-downloader",
+  },
+];
 
 export default function ToolsPage() {
   const collectionSchema = {
@@ -85,8 +107,62 @@ export default function ToolsPage() {
             </p>
           </header>
 
+          {/* Featured Video Downloaders */}
+          <section
+            id="video-downloaders"
+            className="mt-14"
+            aria-labelledby="video-downloaders-heading"
+          >
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center">
+                <p className="text-sm text-blue-400 font-medium">
+                  Featured Tools
+                </p>
+
+                <h2
+                  id="video-downloaders-heading"
+                  className="text-3xl md:text-4xl font-bold mt-2"
+                >
+                  Video Downloaders
+                </h2>
+
+                <p className="text-gray-400 mt-3 max-w-2xl mx-auto leading-relaxed">
+                  Explore our browser-based video downloader tools for
+                  eligible publicly accessible content and content you are
+                  authorized to save.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
+                {downloaderTools.map((tool) => (
+                  <article
+                    key={tool.href}
+                    className="rounded-3xl border border-gray-800 bg-gray-900 p-6 hover:border-gray-600 transition"
+                  >
+                    <h3 className="text-xl font-bold">
+                      {tool.name}
+                    </h3>
+
+                    <p className="text-gray-400 mt-3 leading-relaxed">
+                      {tool.description}
+                    </p>
+
+                    <Link
+                      href={tool.href}
+                      className="inline-block mt-5 text-blue-400 hover:text-blue-300 font-medium"
+                    >
+                      Open {tool.name} →
+                    </Link>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
           {/* AI Tools Search & Directory */}
-          <ToolSearch />
+          <section id="ai-tools-directory" className="mt-16">
+            <ToolSearch />
+          </section>
 
         </div>
       </section>
