@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 
-type Platform = "instagram" | "facebook" | "youtube" | "tiktok";
+type Platform =
+  | "instagram"
+  | "facebook"
+  | "youtube"
+  | "tiktok";
 
 type VideoDownloaderProps = {
   platform: Platform;
@@ -16,6 +20,15 @@ const platformNames: Record<Platform, string> = {
   facebook: "Facebook",
   youtube: "YouTube",
   tiktok: "TikTok",
+};
+
+type DownloadResponse = {
+  success?: boolean;
+  jobId?: string;
+  title?: string;
+  downloadUrl?: string;
+  message?: string;
+  error?: string;
 };
 
 export default function VideoDownloader({
@@ -61,7 +74,15 @@ export default function VideoDownloader({
         }),
       });
 
-      const data = await response.json();
+      let data: DownloadResponse;
+
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error(
+          "The downloader returned an invalid response."
+        );
+      }
 
       if (!response.ok) {
         throw new Error(
@@ -69,13 +90,23 @@ export default function VideoDownloader({
         );
       }
 
-      if (!data?.downloadUrl) {
+      let downloadUrl = data?.downloadUrl;
+
+      // Fallback for deployments where the API only returns a jobId.
+      if (!downloadUrl && data?.jobId) {
+        downloadUrl = `/api/download-file/${encodeURIComponent(
+          data.jobId
+        )}`;
+      }
+
+      if (!downloadUrl) {
         throw new Error(
-          "No downloadable media was returned."
+          data?.message ||
+            "No downloadable media was returned."
         );
       }
 
-      window.location.href = data.downloadUrl;
+      window.location.href = downloadUrl;
     } catch (error) {
       setError(
         error instanceof Error
@@ -141,8 +172,8 @@ export default function VideoDownloader({
         )}
 
         <div className="mt-6 text-center text-xs text-gray-500">
-          Download only publicly accessible content or content you own
-          or have permission to save.
+          Download only publicly accessible content or content
+          you own or have permission to save.
         </div>
       </div>
     </section>
