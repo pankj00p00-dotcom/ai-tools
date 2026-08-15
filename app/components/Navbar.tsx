@@ -57,6 +57,16 @@ export default function Navbar() {
             </Link>
           </li>
 
+          {/* Blog */}
+          <li>
+            <Link
+              href="/blog"
+              className="hover:text-white transition"
+            >
+              Blog
+            </Link>
+          </li>
+
         </ul>
 
         {/* Buttons */}
