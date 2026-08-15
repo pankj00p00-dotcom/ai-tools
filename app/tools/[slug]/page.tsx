@@ -27,6 +27,60 @@ type DownloaderSEO = {
   }[];
 };
 
+
+const downloaderGuides: Record<
+  string,
+  {
+    title: string;
+    href: string;
+  }[]
+> = {
+  "instagram-video-downloader": [
+    {
+      title: "How to Download Instagram Reels",
+      href: "/blog/how-to-download-instagram-reels",
+    },
+    {
+      title: "How to Save Instagram Videos on iPhone",
+      href: "/blog/how-to-save-instagram-videos-on-iphone",
+    },
+    {
+      title: "How to Save Instagram Videos on Android",
+      href: "/blog/how-to-save-instagram-videos-on-android",
+    },
+  ],
+
+  "facebook-video-downloader": [
+    {
+      title: "How to Download Facebook Videos",
+      href: "/blog/how-to-download-facebook-videos",
+    },
+    {
+      title: "How to Save Facebook Videos on iPhone",
+      href: "/blog/how-to-save-facebook-videos-on-iphone",
+    },
+    {
+      title: "How to Save Facebook Videos on Android",
+      href: "/blog/how-to-save-facebook-videos-on-android",
+    },
+  ],
+
+  "youtube-video-downloader": [
+    {
+      title: "How to Download YouTube Videos",
+      href: "/blog/how-to-download-youtube-videos",
+    },
+    {
+      title: "How to Save YouTube Videos on iPhone",
+      href: "/blog/how-to-save-youtube-videos-on-iphone",
+    },
+    {
+      title: "How to Save YouTube Videos on Android",
+      href: "/blog/how-to-save-youtube-videos-on-android",
+    },
+  ],
+};
+
 const downloaderSEO: Record<string, DownloaderSEO> = {
   "instagram-video-downloader": {
     title: "Instagram Video Downloader – Free Online",
@@ -592,6 +646,39 @@ export default async function ToolPage({ params }: ToolPageProps) {
                   ))}
               </div>
             </section>
+
+
+            {/* Related Guides */}
+            {downloaderGuides[slug] && (
+              <section className="mt-14">
+                <h2 className="text-2xl md:text-3xl font-bold">
+                  Helpful {tool.name} Guides
+                </h2>
+
+                <p className="text-gray-400 mt-3 leading-relaxed">
+                  Learn more about saving and downloading eligible{" "}
+                  {downloader.platform} videos on different devices.
+                </p>
+
+                <div className="grid md:grid-cols-3 gap-5 mt-6">
+                  {downloaderGuides[slug].map((guide) => (
+                    <Link
+                      key={guide.href}
+                      href={guide.href}
+                      className="bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-blue-500 transition"
+                    >
+                      <h3 className="text-lg font-bold">
+                        {guide.title}
+                      </h3>
+
+                      <span className="inline-block mt-4 text-blue-400 text-sm">
+                        Read Guide →
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Disclaimer */}
             <section className="mt-14 bg-gray-900 border border-gray-800 rounded-2xl p-6">
