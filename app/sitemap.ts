@@ -71,6 +71,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
 
+    // YouTube SEO articles
+    {
+      url: `${baseUrl}/blog/how-to-download-youtube-videos`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/blog/how-to-save-youtube-videos-on-iphone`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/blog/how-to-save-youtube-videos-on-android`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+
     {
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
