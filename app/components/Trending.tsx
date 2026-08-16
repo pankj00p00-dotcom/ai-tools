@@ -22,6 +22,7 @@ export default function Trending() {
             title="ChatGPT"
             category="Chatbot"
             price="Freemium"
+            slug="chatgpt"  // ✅ ADDED
           />
 
           <ToolCard
@@ -29,6 +30,7 @@ export default function Trending() {
             title="Midjourney"
             category="Image"
             price="Paid"
+            slug="midjourney"  // ✅ ADDED
           />
 
           <ToolCard
@@ -36,6 +38,7 @@ export default function Trending() {
             title="Canva AI"
             category="Design"
             price="Free"
+            slug="canva-ai"  // ✅ ADDED
           />
 
           <ToolCard
@@ -43,6 +46,7 @@ export default function Trending() {
             title="Runway ML"
             category="Video"
             price="Freemium"
+            slug="runway-ml"  // ✅ ADDED
           />
 
           <ToolCard
@@ -50,6 +54,7 @@ export default function Trending() {
             title="GitHub Copilot"
             category="Coding"
             price="Paid"
+            slug="github-copilot"  // ✅ ADDED
           />
 
           <ToolCard
@@ -57,6 +62,7 @@ export default function Trending() {
             title="ElevenLabs"
             category="Voice"
             price="Freemium"
+            slug="elevenlabs"  // ✅ ADDED
           />
 
         </div>

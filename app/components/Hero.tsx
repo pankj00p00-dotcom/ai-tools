@@ -66,6 +66,7 @@ export default function Hero() {
               rating={tool.rating.toString()}
               description={tool.description}
               url={tool.url}
+              slug={tool.slug}  // ✅ ADDED
             />
           ))
         ) : (

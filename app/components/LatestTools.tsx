@@ -39,17 +39,53 @@ export default function LatestTools() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-          <ToolCard icon="🎬" title="Pika Labs" category="Video" price="Freemium" />
+          <ToolCard 
+            icon="🎬" 
+            title="Pika Labs" 
+            category="Video" 
+            price="Freemium" 
+            slug="pika-labs"  // ✅ ADDED
+          />
 
-          <ToolCard icon="🎨" title="Leonardo AI" category="Image" price="Free" />
+          <ToolCard 
+            icon="🎨" 
+            title="Leonardo AI" 
+            category="Image" 
+            price="Free" 
+            slug="leonardo-ai"  // ✅ ADDED
+          />
 
-          <ToolCard icon="🧠" title="Claude AI" category="Chatbot" price="Free" />
+          <ToolCard 
+            icon="🧠" 
+            title="Claude AI" 
+            category="Chatbot" 
+            price="Free" 
+            slug="claude-ai"  // ✅ ADDED
+          />
 
-          <ToolCard icon="📈" title="Gamma AI" category="Presentation" price="Freemium" />
+          <ToolCard 
+            icon="📈" 
+            title="Gamma AI" 
+            category="Presentation" 
+            price="Freemium" 
+            slug="gamma-ai"  // ✅ ADDED
+          />
 
-          <ToolCard icon="🎙️" title="HeyGen" category="Avatar" price="Paid" />
+          <ToolCard 
+            icon="🎙️" 
+            title="HeyGen" 
+            category="Avatar" 
+            price="Paid" 
+            slug="heygen"  // ✅ ADDED
+          />
 
-          <ToolCard icon="📄" title="Notion AI" category="Writing" price="Freemium" />
+          <ToolCard 
+            icon="📄" 
+            title="Notion AI" 
+            category="Writing" 
+            price="Freemium" 
+            slug="notion-ai"  // ✅ ADDED
+          />
 
         </div>
 
